@@ -22,13 +22,18 @@ def main():
     help="directory of filesystem to package")
   sub_parser.set_defaults(func=list_files)
 
+  sub_parser = subparsers.add_parser('build', help="Build package.")
+  sub_parser.add_argument('clumpath',
+                          help="Path to source clump directory")
+  sub_parser.set_defaults(func=build)
+
   args = parser.parse_args()
   args.func(args)
 
-def make(clumpath):
-  clump = common.Clump(clumpath)
+def build(args):
+  clump = common.Clump(args.clumpath)
   tar = tarfile.open(backend.tarball_filepath(clump), "w:gz")
-  tar.add(clumpath, clump.name + '-' + clump.version)
+  tar.add(args.clumpath, clump.name + '-' + clump.version)
   tar.close()
   backend.build(clump)
 
