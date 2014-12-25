@@ -1,0 +1,12 @@
+Source: $name
+Maintainer: anonymous <anonymous@example.com>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.5
+Build-Depends: debhelper (>= 9)
+
+Package: $name
+Architecture: $arch
+Depends:$depends $${shlibs:Depends}, $${misc:Depends}
+Description: $summary
+$description
