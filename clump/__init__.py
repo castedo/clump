@@ -8,14 +8,22 @@ osrelease.sys_path_append_match(os.path.dirname(__file__))
 import backend
 import common 
 
-def get_buildroot():
-  parser = argparse.ArgumentParser(description='Generate files list for RPM.')
-  parser.add_argument('buildroot', help="directory of filesystem to package")
-  args = parser.parse_args()
-  return args.buildroot
+def list_files(args):
+  backend.print_files_list(args.buildroot)
 
 def main():
-  print_files_list(get_buildroot())
+  parser = argparse.ArgumentParser(
+    description="Cross Linux Uniform Mutual Packager")
+  subparsers = parser.add_subparsers(title="clump commands")
+
+  sub_parser = subparsers.add_parser('list-files',
+    help="Generate files list for RPM.")
+  sub_parser.add_argument('buildroot',
+    help="directory of filesystem to package")
+  sub_parser.set_defaults(func=list_files)
+
+  args = parser.parse_args()
+  args.func(args)
 
 def make(clumpath):
   clump = common.Clump(clumpath)
@@ -23,7 +31,4 @@ def make(clumpath):
   tar.add(clumpath, clump.name + '-' + clump.version)
   tar.close()
   backend.build(clump)
-
-def print_files_list(buildroot):
-  backend.print_files_list(buildroot)
 
