@@ -9,6 +9,8 @@ setup(name='clump',
       author_email='castedo@castedo.com',
       license='MIT',
       packages=['clump'],
-      package_data={'clump': ['rhel/*', 'debian/*']}
+      url='https://github.com/castedo/clump',
+      package_data={'clump': ['rhel/*', 'debian/*']},
+      scripts=['scripts/clump']
 )
 

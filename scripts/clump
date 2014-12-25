@@ -1,0 +1,18 @@
+#!/usr/bin/python -t
+
+from __future__ import print_function, division, unicode_literals
+import warnings
+import os
+import sys
+import argparse
+import clump
+
+def get_buildroot():
+  parser = argparse.ArgumentParser(description='Generate files list for RPM.')
+  parser.add_argument('buildroot', help="directory of filesystem to package")
+  args = parser.parse_args()
+  return args.buildroot
+
+if __name__ == "__main__":
+  clump.print_files_list(get_buildroot())
+

@@ -1,5 +1,5 @@
-clump - Cross Linux Uniform Mutual Packager
-=============================================
+Cross Linux Uniform Mutual Packager
+===================================
 
 Clump is a tool for generating both RPM and Debian packages from a single
 distro-agnostic source. Clump reads a YAML file similar to RPM spec files and
@@ -20,8 +20,8 @@ Caveats
 Clump is experimental at this stage and in use on CentOS 7 and Ubuntu 14.04.
 
 
-Other Similar Projects
-----------------------
+Related Projects
+----------------
 
 * [Effing Package Management](http://github.com/jordansissel/fpm)
 * [Open Build Service](http://openbuildservice.org)
