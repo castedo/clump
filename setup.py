@@ -11,6 +11,7 @@ setup(name='clump',
       packages=['clump'],
       url='https://github.com/castedo/clump',
       package_data={'clump': ['rhel/*', 'debian/*']},
+      requires=['yaml', 'configobj'],
       scripts=['scripts/clump']
 )
 
