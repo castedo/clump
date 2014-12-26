@@ -20,7 +20,7 @@ $build
 %install
 rm -rf %{buildroot}
 $install
-clump list-files %{buildroot} > clump-list-files-output.txt
+%{__python2} $listfiles %{buildroot} filesystem > clump-list-files-output.txt
 
 %clean
 rm -rf %{buildroot}

@@ -1,7 +1,7 @@
 from __future__ import print_function, division, unicode_literals
 import warnings
 import os
-import subprocess
+from os.path import join
 from string import Template
 from subprocess import check_call
 
@@ -62,8 +62,9 @@ def rpm_spec_content(clump):
   vals.setdefault('prep', '# no prep')
   vals.setdefault('build', '# no build')
   vals.setdefault('install', '# no installation')
+  vals['listfiles'] = join(os.path.dirname(__file__), 'listfiles.py')
 
-  template_path = os.path.join(os.path.dirname(__file__), 'template-rpm.spec')
+  template_path = join(os.path.dirname(__file__), 'template-rpm.spec')
   tmpl = Template(open(template_path).read())
   return(tmpl.substitute(vals))
 
@@ -72,18 +73,4 @@ def build(clump):
   specpath = os.path.expanduser('~/rpmbuild/SPECS/' + name_version + '.spec')
   print(rpm_spec_content(clump), file=open(specpath, "w"))
   check_call(['rpmbuild', '-ba', specpath])
-
-def list_files(buildroot, path, exclude):
-  if path not in exclude:
-    print('"' + path + '"')
-  else:
-    realpath = buildroot + path
-    if os.path.isdir(realpath):
-      for name in os.listdir(realpath):
-        list_files(buildroot, os.path.join(path, name), exclude)
-
-def print_files_list(buildroot):
-  output = subprocess.check_output(['rpm', '--query', '--list', 'filesystem'])
-  exclude = output.splitlines()
-  list_files(buildroot, '/', exclude)
 
