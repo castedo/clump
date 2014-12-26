@@ -1,1 +1,2 @@
-PYTHONPATH="$(dirname $0)/.." ../scripts/clump $*
+CLUMPHOME="$(dirname $0)/.."
+PYTHONPATH=$CLUMPHOME $CLUMPHOME/scripts/clump $*
