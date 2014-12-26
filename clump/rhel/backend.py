@@ -73,18 +73,17 @@ def build(clump):
   print(rpm_spec_content(clump), file=open(specpath, "w"))
   check_call(['rpmbuild', '-ba', specpath])
 
+def list_files(buildroot, path, exclude):
+  if path not in exclude:
+    print('"' + path + '"')
+  else:
+    realpath = buildroot + path
+    if os.path.isdir(realpath):
+      for name in os.listdir(realpath):
+        list_files(buildroot, os.path.join(path, name), exclude)
+
 def print_files_list(buildroot):
   output = subprocess.check_output(['rpm', '--query', '--list', 'filesystem'])
   exclude = output.splitlines()
-  for (dirpath, dirnames, filenames) in os.walk(buildroot):
-    rpath = os.path.relpath(dirpath, buildroot)
-    rpath = '/' + rpath if rpath != '.' else ''
-    paths = [rpath + '/' + n for n in dirnames]
-    for p in paths:
-      if p not in exclude:
-        print('%dir "' + p + '"')
-    paths = [rpath + '/' + n for n in filenames]
-    for p in paths:
-      if p not in exclude:
-        print('"' + p + '"')
+  list_files(buildroot, '/', exclude)
 

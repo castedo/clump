@@ -51,7 +51,7 @@ class Component(object):
 class Clump(object):
 
   def __init__(self, path):
-    filename = os.path.join(path, "clump")
+    filename = os.path.join(path, "clump.yaml")
     content = yaml.load(open(filename), yaml.BaseLoader)
     content = dict((k.lower(), content[k]) for k in content)
 

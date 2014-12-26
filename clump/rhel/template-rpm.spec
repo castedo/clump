@@ -20,12 +20,12 @@ $build
 %install
 rm -rf %{buildroot}
 $install
-clump list-files %{buildroot} > clmp-files-list-output.txt
+clump list-files %{buildroot} > clump-list-files-output.txt
 
 %clean
 rm -rf %{buildroot}
 
-%files -f clmp-files-list-output.txt
+%files -f clump-list-files-output.txt
 %defattr(-,root,root,-)
 
 %changelog

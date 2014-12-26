@@ -1,0 +1,16 @@
+Name: clump
+Summary: Cross Linux Uniform Mutual Packager
+Arch: any
+Requires:
+- python-yaml
+- python-configobj
+- rhel: rpm
+  debian: devscripts
+Description: |
+  Build packages for Enterprise Linux and Debian based Linux distros in a
+  uniform way for mutually supported packege functionality.
+changelog:
+- version: 0.1
+  when: Thu Dec 25 2014
+  who: Castedo Ellerman <castedo@castedo.com>
+  what: Initial version packaging itself.
