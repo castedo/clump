@@ -62,7 +62,7 @@ def rpm_spec_content(clump):
   vals.setdefault('prep', '# no prep')
   vals.setdefault('build', '# no build')
   vals.setdefault('install', '# no installation')
-  vals['listfiles'] = join(os.path.dirname(__file__), 'listfiles.py')
+  vals['unlistfiles'] = 'filesystem'
 
   template_path = join(os.path.dirname(__file__), 'template-rpm.spec')
   tmpl = Template(open(template_path).read())
