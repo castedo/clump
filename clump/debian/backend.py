@@ -24,14 +24,20 @@ def debian_control(clump):
   vals = dict()
   vals['name'] = clump.name
   vals['summary'] = clump.summary if clump.summary else clump.name
+
   if clump.description:
     lines = string.split(clump.description, '\n')
     vals['description'] = ' ' + string.join(lines, '\n ')
   vals.setdefault('description', '')
+
+  if clump.arch:
+    vals['arch'] = clump.arch if clump.arch != 'noarch' else 'all'
   vals.setdefault('arch', 'any')
+
   vals['depends'] = ''
   for d in clump.requires:
     vals['depends'] += d.lower() + ', '
+
   template_path = path.join(MODULE_PATH, 'template-control')
   tmpl = string.Template(open(template_path).read())
   return(tmpl.substitute(vals))

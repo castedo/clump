@@ -44,8 +44,8 @@ def rpm_spec_content(clump):
   vals['description'] = clump.description if clump.description else ''
   vals['sources'] = rpm_sources(clump)
 
-  if clump.arch:
-    arch = 'noarch' if clump.arch == 'any' else clump.arch
+  if clump.arch && clump.arch != 'any':
+    arch = 'noarch' if clump.arch == 'all' else clump.arch
     vals['buildarch'] = 'BuildArch:      ' + arch
   else:
     vals['buildarch'] = ''

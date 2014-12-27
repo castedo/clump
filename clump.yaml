@@ -1,7 +1,8 @@
 Name: clump
 Summary: Cross Linux Uniform Mutual Packager
-Arch: any
+Arch: all
 Requires:
+- python
 - python-yaml
 - python-configobj
 - rhel: rpm
