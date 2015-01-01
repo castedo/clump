@@ -48,11 +48,13 @@ class Component(object):
               + " hash digest in chunk file")
         raise ValueError(msg)
 
-class Clump(object):
+class ClumpInfo(object):
 
-  def __init__(self, path):
-    filename = os.path.join(path, "clump.yaml")
-    content = yaml.load(open(filename), yaml.BaseLoader)
+  def __init__(self, yamlfile):
+    if isinstance(yamlfile, unicode):
+      yamlfile = open(yamlfile)
+    content = yaml.load(yamlfile, yaml.BaseLoader)
+    yamlfile.close()
     content = dict((k.lower(), content[k]) for k in content)
 
     self.name = content.get('name')
@@ -65,6 +67,8 @@ class Clump(object):
     self._init_changelog(content)
     self._init_version(content)
     self._init_sources(content)
+    self.tarfilename = "{0}_{1}.orig.tar.gz".format(self.name, self.version)
+    self.untardir = "{0}-{1}".format(self.name, self.version)
 
   def _init_changelog(self, content):
     self.changelog = content.get('changelog')

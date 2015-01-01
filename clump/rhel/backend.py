@@ -5,11 +5,11 @@ from os.path import join
 from string import Template
 from subprocess import check_call
 
-def tarball_filename(clump):
-  return "{0}-{1}.tar.gz".format(clump.name, clump.version)
+def tarball_dest():
+  return os.path.expanduser('~/rpmbuild/SOURCES/')
 
-def tarball_filepath(clump):
-  return os.path.expanduser('~/rpmbuild/SOURCES/') + tarball_filename(clump)
+def build_dir():
+  return os.path.expanduser('~/rpmbuild/BUILD/')
 
 def rpm_changelog(clump):
   ret = ''
@@ -19,7 +19,7 @@ def rpm_changelog(clump):
   return ret
 
 def rpm_sources(clump):
-  ret = 'Source:         ' + tarball_filename(clump)
+  ret = 'Source:         ' + clump.tarfilename
   n = 1
   for c in clump.components:
     ret += '\nSource{0}:        {1}'.format(n, c.file if c.file else c.url)
@@ -44,7 +44,7 @@ def rpm_spec_content(clump):
   vals['description'] = clump.description if clump.description else ''
   vals['sources'] = rpm_sources(clump)
 
-  if clump.arch && clump.arch != 'any':
+  if clump.arch and clump.arch != 'any':
     arch = 'noarch' if clump.arch == 'all' else clump.arch
     vals['buildarch'] = 'BuildArch:      ' + arch
   else:

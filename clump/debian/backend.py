@@ -11,11 +11,11 @@ from subprocess import check_call
 
 MODULE_PATH = path.abspath(path.dirname(__file__))
 
-def tarball_filename(clump):
-  return "{0}_{1}.orig.tar.gz".format(clump.name, clump.version)
+def tarball_dest():
+  return "."
 
-def tarball_filepath(clump):
-  return tarball_filename(clump)
+def build_dir():
+  return "."
 
 def debian_rules():
   return(open(path.join(MODULE_PATH, 'rules')).read())
@@ -59,13 +59,12 @@ def debian_changelog(clump):
   return(ret)
 
 def build(clump):
-  name_version = clump.name + '-' + clump.version
-  if path.exists(name_version):
-    shutil.rmtree(name_version)
-  tar = tarfile.open(tarball_filepath(clump), "r:gz")
+  if path.exists(clump.untardir):
+    shutil.rmtree(clump.untardir)
+  tar = tarfile.open(clump.tarfilename, "r:gz")
   tar.extractall()
   tar.close()
-  os.chdir(name_version)
+  os.chdir(clump.untardir)
   os.mkdir('debian')
   print("9", file=open('debian/compat', 'w'))
   print("Format: about:blank", file=open('debian/copyright', 'w'))
