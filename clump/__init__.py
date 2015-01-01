@@ -2,6 +2,7 @@ from __future__ import print_function, division, unicode_literals
 import warnings
 import os
 from os.path import join
+import shutil
 import argparse
 import tarfile
 import osrelease
@@ -43,7 +44,7 @@ def main():
     srcpath = clump_dir_to_tarball(srcpath)
   clump = clumpball_info(srcpath)
   tarpath = join(backend.tarball_dest(), clump.tarfilename)
-  if not os.path.samefile(srcpath, tarpath):
-    os.copy(srcpath, tarpath)
+  if not os.path.exists(tarpath) or not os.path.samefile(srcpath, tarpath):
+    shutil.copy(srcpath, tarpath)
   backend.build(clump)
 
