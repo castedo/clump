@@ -4,6 +4,7 @@ import os
 from os.path import join
 from string import Template
 from subprocess import check_call
+from clump import common
 
 def tarball_dest():
   return os.path.expanduser('~/rpmbuild/SOURCES/')
@@ -30,9 +31,20 @@ def rpm_prep(clump):
   lines = ['%setup -q']
   n = 1
   for c in clump.components:
-    c.save_source(os.path.expanduser('~/rpmbuild/SOURCES/'))
-    lines.append("mkdir {0}".format(c.id))
-    lines.append("cp %SOURCE{0} {1}".format(n, c.id))
+    if c.file:
+      outpath = os.path.expanduser('~/rpmbuild/SOURCES/') + c.file
+      c.save_source(outpath)
+      lines.append("mkdir {0}".format(c.id))
+      lines.append("cp %SOURCE{0} {1}".format(n, c.id))
+    else:
+      fn = c.url.split('/')[-1]
+      if not fn:
+        fn = "{0}_{1}.orig-{2}.tar.gz".format(clump.name, clump.version, c.id)
+      outpath = os.path.expanduser('~/rpmbuild/SOURCES/') + fn
+      c.save_source(outpath)
+      untardir = common.tarball_topdir(outpath)
+      lines.append("%setup -q -T -D -a {0}".format(n))
+      lines.append("mv {0} {1}".format(untardir, c.id))
     n += 1
   return '\n'.join(lines)
 
@@ -40,6 +52,7 @@ def rpm_spec_content(clump):
   vals = dict()
   vals['name'] = clump.name
   vals['version'] = clump.version
+  vals['release'] = clump.release
   vals['summary'] = clump.summary if clump.summary else clump.name
   vals['description'] = clump.description if clump.description else ''
   vals['sources'] = rpm_sources(clump)

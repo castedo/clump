@@ -8,7 +8,7 @@ import tarfile
 import osrelease
 osrelease.sys_path_append_match(os.path.dirname(__file__))
 import backend
-from common import ClumpInfo
+from common import ClumpInfo, tarball_topdir
 
 def clump_dir_to_tarball(dirpath):
   clump = ClumpInfo(join(dirpath, "clump.yaml"))
@@ -17,16 +17,6 @@ def clump_dir_to_tarball(dirpath):
   tar.add(dirpath, clump.untardir)
   tar.close()
   return tarfilepath
-
-def tarball_topdir(tar):
-  ret = None
-  for entry in tar:
-    if len(os.path.dirname(entry.name)) == 0:
-      if entry.isdir() and not ret:
-        ret = entry.name
-      else:
-        raise Exception("tar file not a proper tarball")
-  return ret
 
 def clumpball_info(path):
   with tarfile.open(path, "r:gz") as tar:

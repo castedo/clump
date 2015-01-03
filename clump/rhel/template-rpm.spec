@@ -1,7 +1,7 @@
 Summary:        $summary
 Name:           $name
 Version:        $version
-Release:        1%{?dist}
+Release:        $release.0%{?dist}
 License:        MIT
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 $buildarch

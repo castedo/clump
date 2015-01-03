@@ -5,16 +5,31 @@ import osrelease
 import yaml
 import urllib
 import hashlib
+import tarfile
+
+def tarball_topdir(tar):
+  if not isinstance(tar, tarfile.TarFile):
+    with tarfile.open(tar, "r") as obj:
+      return tarball_topdir(obj)
+  ret = None
+  for entry in tar:
+    if len(os.path.dirname(entry.name)) == 0:
+      if entry.isdir() and not ret:
+        ret = entry.name
+      else:
+        raise Exception("tar file not a proper tarball")
+  return ret
 
 def resolve_requires(requires):
   ret = list()
-  for requirement in requires:
-    if type(requirement) is dict:
-      for id in osrelease.IDS:
-        if id in requirement:
-          requirement = requirement[id]
-          break
-    ret.append(requirement)
+  if requires:
+    for requirement in requires:
+      if type(requirement) is dict:
+        for id in osrelease.IDS:
+          if id in requirement:
+            requirement = requirement[id]
+            break
+      ret.append(requirement)
   return ret
 
 def file_digest(filepath, hashobj):
@@ -33,19 +48,17 @@ class Component(object):
     self.sha1 = values.get('sha1')
     self.file = values.get('file')
 
-  def save_source(self, destpath):
-    if not self.file:
-      raise NotImplementedError("can only deal with files right now")
-    source_path = os.path.join(destpath, self.file)
-    if not os.path.exists(source_path):
+  def save_source(self, outpath):
+    if not os.path.exists(outpath):
       if not self.sha1:
         raise NotImplementedError("only SHA1 supported right now")
-      print(source_path + " <- " + self.url)
-      urllib.urlretrieve(self.url, source_path)
+      print(outpath + " <- " + self.url)
+      urllib.urlretrieve(self.url, outpath)
+
     if self.sha1:
-      if self.sha1 != file_digest(source_path, hashlib.sha1()):
+      if self.sha1 != file_digest(outpath, hashlib.sha1()):
         msg = ( "hash digest of downloaded file does not match"
-              + " hash digest in chunk file")
+              + " hash digest in clump file")
         raise ValueError(msg)
 
 class ClumpInfo(object):
@@ -60,6 +73,7 @@ class ClumpInfo(object):
     self.name = content.get('name')
     if not self.name:
       raise ValueError("'name:' value is required in clump file")
+    self.release = content.get('release', 0)
     self.arch = content.get('arch')
     self.summary = content.get('summary')
     self.description = content.get('description')
