@@ -20,7 +20,7 @@ $build
 %install
 rm -rf %{buildroot}
 $install
-%{__python2} -m "clump.rpmlistfiles" %{buildroot} $unlistfiles > clump-out.txt
+%{__python} -m "clump.rpmlistfiles" %{buildroot} $unlistfiles > clump-out.txt
 
 %clean
 rm -rf %{buildroot}

@@ -11,6 +11,10 @@ Description: |
   Build packages for Enterprise Linux and Debian based Linux distros in a
   uniform way for mutually supported packege functionality.
 changelog:
+- version: 0.2
+  when: Mon Jan 05 2015
+  who: Castedo Ellerman <castedo@castedo.com>
+  what: Backport to work with Python 2.6 for Amazon Linux
 - version: 0.1
   when: Thu Dec 25 2014
   who: Castedo Ellerman <castedo@castedo.com>

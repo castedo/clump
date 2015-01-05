@@ -9,8 +9,10 @@ import tarfile
 
 def tarball_topdir(tar):
   if not isinstance(tar, tarfile.TarFile):
-    with tarfile.open(tar, "r") as obj:
-      return tarball_topdir(obj)
+    obj = tarfile.open(tar, "r")
+    ret = tarball_topdir(obj)
+    obj.close()
+    return ret
   ret = None
   for entry in tar:
     if len(os.path.dirname(entry.name)) == 0:
@@ -33,13 +35,15 @@ def resolve_requires(requires):
   return ret
 
 def file_digest(filepath, hashobj):
-  with open(filepath, 'rb') as f:
-    while True:
-      chunk = f.read(4096)
-      if chunk:
-        hashobj.update(chunk)
-      else:
-        return hashobj.hexdigest()
+  f = open(filepath, 'rb')
+  while True:
+    chunk = f.read(4096)
+    if chunk:
+      hashobj.update(chunk)
+    else:
+      f.close()
+      return hashobj.hexdigest()
+  f.close()
 
 class Component(object):
   def __init__(self, id, values):
