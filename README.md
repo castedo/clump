@@ -17,8 +17,10 @@ functionality mutually supported in both package managers.
 Caveats
 -------
 
-Clump is experimental at this stage and in use on CentOS 7 and Ubuntu 14.04.
-
+Clump is experimental at this stage and in use on:
+* CentOS 7
+* Amazon Linux 2014.09
+* Ubuntu 14.04
 
 Related Projects
 ----------------
