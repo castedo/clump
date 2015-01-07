@@ -68,14 +68,18 @@ def rpm_spec_content(clump):
     vals['requires'] += 'Requires:       ' + r + '\n'
 
   vals['prep'] = rpm_prep(clump)
-  vals['build'] = '%cmake .' + '\n' + 'make'
-  vals['install'] = 'make install DESTDIR=%{buildroot}'
   vals['changelog'] = rpm_changelog(clump)
+  if clump.install:
+    vals['install'] = ( "export DESTDIR=%{buildroot}" +
+                        '\n' + "clumpiled/install.sh" )
+  elif clump.cmake:
+    vals['build'] = '%cmake .' + '\n' + 'make'
+    vals['install'] = 'make install DESTDIR=%{buildroot}'
 
   vals.setdefault('prep', '# no prep')
   vals.setdefault('build', '# no build')
   vals.setdefault('install', '# no installation')
-  vals['unlistfiles'] = 'filesystem'
+  vals['unlist'] = 'filesystem'
 
   template_path = join(os.path.dirname(__file__), 'template-rpm.spec')
   tmpl = Template(open(template_path).read())

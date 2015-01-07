@@ -81,6 +81,8 @@ class ClumpInfo(object):
     self.arch = content.get('arch')
     self.summary = content.get('summary')
     self.description = content.get('description')
+    self.cmake = content.get('cmake')
+    self.install = content.get('install')
     self.requires = resolve_requires(content.get('requires'))
     self._init_changelog(content)
     self._init_version(content)

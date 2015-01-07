@@ -13,6 +13,8 @@ $description
 
 %prep
 $prep
+mkdir clumpiled
+%{__python} -m "clump.clumpile"
 
 %build
 $build
@@ -20,12 +22,12 @@ $build
 %install
 rm -rf %{buildroot}
 $install
-%{__python} -m "clump.rpmlistfiles" %{buildroot} $unlistfiles > clump-out.txt
+%{__python} -m "clump.rpmlistfiles" %{buildroot} $unlist > clumpiled/files.txt
 
 %clean
 rm -rf %{buildroot}
 
-%files -f clump-out.txt
+%files -f clumpiled/files.txt
 %defattr(-,root,root,-)
 
 %changelog

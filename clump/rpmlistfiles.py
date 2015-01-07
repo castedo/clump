@@ -15,6 +15,8 @@ if "check_output" not in dir(subprocess):
     if retcode:
       raise subprocess.CalledProcessError(retcode, cmd_line)
     return output
+else:
+  from subprocess import check_output
 
 def list_files(buildroot, path, exclude):
   if path not in exclude:

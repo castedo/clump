@@ -1,6 +1,8 @@
 Name: clump
 Summary: Cross Linux Uniform Mutual Packager
 Arch: all
+install:
+  python setup.py install --root=$DESTDIR
 Requires:
 - python
 - python-yaml
@@ -11,6 +13,12 @@ Description: |
   Build packages for Enterprise Linux and Debian based Linux distros in a
   uniform way for mutually supported packege functionality.
 changelog:
+- version: 0.3
+  when: Mon Jan 07 2015
+  who: Castedo Ellerman <castedo@castedo.com>
+  what: |
+    implement sections install and cmake on Enterprise Linux
+    fix check_output call on Python 2.7
 - version: 0.2
   when: Mon Jan 05 2015
   who: Castedo Ellerman <castedo@castedo.com>
