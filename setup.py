@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 
 from distutils.core import setup
+from clump.common import ClumpInfo
 
-setup(name='clump',
-      version='0.1',
-      description='Cross Linux Unrefined Mutual Packager',
+clump = ClumpInfo("clump.yaml")
+
+setup(name=clump.name,
+      version=clump.version,
+      description=clump.summary,
       author='Castedo Ellerman',
       author_email='castedo@castedo.com',
       license='MIT',

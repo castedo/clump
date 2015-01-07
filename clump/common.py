@@ -68,7 +68,7 @@ class Component(object):
 class ClumpInfo(object):
 
   def __init__(self, yamlfile):
-    if isinstance(yamlfile, unicode):
+    if isinstance(yamlfile, unicode) or isinstance(yamlfile, str):
       yamlfile = open(yamlfile)
     content = yaml.load(yamlfile, yaml.BaseLoader)
     yamlfile.close()
