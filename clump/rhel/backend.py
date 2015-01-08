@@ -52,7 +52,6 @@ def rpm_spec_content(clump):
   vals = dict()
   vals['name'] = clump.name
   vals['version'] = clump.version
-  vals['release'] = clump.release
   vals['summary'] = clump.summary if clump.summary else clump.name
   vals['description'] = clump.description if clump.description else ''
   vals['sources'] = rpm_sources(clump)

@@ -77,7 +77,6 @@ class ClumpInfo(object):
     self.name = content.get('name')
     if not self.name:
       raise ValueError("'name:' value is required in clump file")
-    self.release = content.get('release', 0)
     self.arch = content.get('arch')
     self.summary = content.get('summary')
     self.description = content.get('description')
