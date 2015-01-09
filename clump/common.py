@@ -83,9 +83,11 @@ class ClumpInfo(object):
     self.cmake = content.get('cmake')
     self.install = content.get('install')
     self.requires = resolve_requires(content.get('requires'))
+    self.buildrequires = resolve_requires(content.get('buildrequires'))
     self._init_changelog(content)
     self._init_version(content)
     self._init_sources(content)
+    self._init_ownership(content)
     self.tarfilename = "{0}_{1}.orig.tar.gz".format(self.name, self.version)
     self.untardir = "{0}-{1}".format(self.name, self.version)
 
@@ -107,4 +109,10 @@ class ClumpInfo(object):
     if 'components' in content:
       for k, v in content['components'].iteritems():
         self.components.append(Component(k, v))
+
+  def _init_ownership(self, content):
+    self.ownership = content.get('ownership')
+    for k, v in self.ownership.iteritems():
+      if k[-1] == '/':
+        raise ValueError("do not end directory paths with '/'")
 

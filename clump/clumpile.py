@@ -8,6 +8,13 @@ from clump.common import ClumpInfo
 
 MODULE_PATH = path.abspath(path.dirname(__file__))
 
+def write_bash_script(content, filename):
+  path = "clumpiled/" + filename
+  with open(path, 'w') as fout:
+    print("#!/bin/bash", file=fout)
+    print(content, file=fout)
+  os.chmod(path, 0755)
+
 if __name__ == "__main__":
   clump = ClumpInfo("clump.yaml")
   distutils.dir_util.mkpath("clumpiled")
@@ -18,8 +25,5 @@ if __name__ == "__main__":
       srcpath = path.join(MODULE_PATH, "default-CMakeLists.txt")
       shutil.copy(srcpath, "CMakeLists.txt")
   elif clump.install:
-    with open("clumpiled/install.sh", 'w') as fout:
-      print("#!/bin/bash", file=fout)
-      print(clump.install, file=fout)
-    os.chmod("clumpiled/install.sh", 0755)
+    write_bash_script(clump.install, "install.sh")
 
