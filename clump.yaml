@@ -11,7 +11,7 @@ Requires:
   debian: devscripts
 Description: |
   Build packages for Enterprise Linux and Debian based Linux distros in a
-  uniform way for mutually supported packege functionality.
+  uniform way for mutually supported package functionality.
 changelog:
 - version: 0.3
   when: Mon Jan 07 2015
