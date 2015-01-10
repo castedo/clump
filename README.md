@@ -14,6 +14,30 @@ distro-specific features that Debian and RPM package managers offer.
 Instead clump is intended for simple packages that only use common
 functionality mutually supported in both package managers.
 
+Examples
+--------
+
+The [clump.yaml](clump.yaml) in this repository is an example, clump can
+package itself using clump. Other examples can be found in the
+[clump-examples](https://github.com/castedo/clump-examples) repository.
+
+Notable Features
+----------------
+
+### Automatic RPM file list generation
+
+Clump will automatically deduce a "files list" for an RPM package by looking at
+what gets install and then removing paths owned by any required packages and
+the "filesystem" package.
+
+### Uniform specification of user and group ownership of files and directories
+
+RPM packages can declare a user and group for installed files and directories.
+Debian in contrast requires post-installation script to call chown on installed
+paths. Clump allows a declaration user and group ownership within `clump.yaml`
+of installed paths and clump will generate appropriate RPM or Debian
+post-instalation scripts as appropriate.
+
 Caveats
 -------
 
