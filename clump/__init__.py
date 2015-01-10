@@ -19,7 +19,7 @@ def clump_dir_to_tarball(dirpath):
   return tarfilepath
 
 def clumpball_info(path):
-  tar = tarfile.open(path, "r:gz")
+  tar = tarfile.open(path, "r")
   entry = join(tarball_topdir(tar), "clump.yaml")
   info = ClumpInfo(tar.extractfile(entry))
   tar.close()

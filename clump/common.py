@@ -52,6 +52,10 @@ class Component(object):
     self.sha1 = values.get('sha1')
     self.file = values.get('file')
 
+  def debian_tarball_filename(self, clump):
+    fn = "{0}_{1}.orig-{2}.tar.gz"
+    return fn.format(clump.name, clump.version, self.id)
+
   def save_source(self, outpath):
     if not os.path.exists(outpath):
       if not self.sha1:
