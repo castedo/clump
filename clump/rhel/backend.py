@@ -15,7 +15,8 @@ def build_dir():
 def rpm_changelog(clump):
   ret = ''
   for entry in clump.changelog:
-    ret += "* {0} {1} - {2}\n".format(entry['when'], entry['who'], entry['version'])
+    s = "* {0} {1} - {2}\n"
+    ret += s.format(entry['when'], entry['who'], entry['version'])
     ret += "- {0}\n".format(entry['what'])
   return ret
 
@@ -39,7 +40,7 @@ def rpm_prep(clump):
     else:
       fn = c.url.split('/')[-1]
       if not fn:
-        fn = "{0}_{1}.orig-{2}.tar.gz".format(clump.name, clump.version, c.id)
+        fn = c.debian_tarball_filename(clump)
       outpath = os.path.expanduser('~/rpmbuild/SOURCES/') + fn
       c.save_source(outpath)
       untardir = common.tarball_topdir(outpath)
@@ -68,16 +69,14 @@ def rpm_spec_content(clump):
 
   vals['prep'] = rpm_prep(clump)
   vals['changelog'] = rpm_changelog(clump)
+
   if clump.install:
+    vals['build'] = '# no build'
     vals['install'] = ( "export DESTDIR=%{buildroot}" +
                         '\n' + "clumpiled/install.sh" )
-  elif clump.cmake:
+  else:
     vals['build'] = '%cmake .' + '\n' + 'make'
     vals['install'] = 'make install DESTDIR=%{buildroot}'
-
-  vals.setdefault('prep', '# no prep')
-  vals.setdefault('build', '# no build')
-  vals.setdefault('install', '# no installation')
 
   template_path = join(os.path.dirname(__file__), 'template-rpm.spec')
   tmpl = Template(open(template_path).read())
