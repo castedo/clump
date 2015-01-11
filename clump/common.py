@@ -115,8 +115,14 @@ class ClumpInfo(object):
         self.components.append(Component(k, v))
 
   def _init_ownership(self, content):
-    self.ownership = content.get('ownership')
-    for k, v in self.ownership.iteritems():
-      if k[-1] == '/':
-        raise ValueError("do not end directory paths with '/'")
+    self.ownership = dict()
+    if 'ownership' in content:
+      for k, v in content['ownership'].iteritems():
+        if k[-1] == '/':
+          raise ValueError("do not end directory paths with '/'")
+        for x in self.ownership:
+          if x.startswith(k) or k.startswith(x):
+            raise ValueError("nested ownership paths not supported")
+        self.ownership[k] = v
+
 
