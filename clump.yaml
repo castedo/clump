@@ -13,8 +13,14 @@ Description: |
   Build packages for Enterprise Linux and Debian based Linux distros in a
   uniform way for mutually supported package functionality.
 changelog:
+- version: 0.4
+  when: Mon Jan 12 2015
+  who: Castedo Ellerman <castedo@castedo.com>
+  what: |
+    walk all indirect rpm dependencies to find directories
+    to exclude from rpm files list
 - version: 0.3
-  when: Mon Jan 07 2015
+  when: Wed Jan 07 2015
   who: Castedo Ellerman <castedo@castedo.com>
   what: |
     implement sections install and cmake on Enterprise Linux
