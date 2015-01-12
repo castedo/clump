@@ -46,6 +46,10 @@ Clump is experimental at this stage and in use on:
 * Amazon Linux 2014.09
 * Ubuntu 14.04
 
+Clump generates packages for the distribution it is being run on.  For multiple
+packages for muliple distributions you need to run clump on those multiple
+distributions.
+
 Related Projects
 ----------------
 

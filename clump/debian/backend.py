@@ -21,8 +21,8 @@ def debian_rules(clump):
   vals = dict()
   if clump.install:
     vals['build'] = '# no build'
-    vals['install'] = ( "export DESTDIR=debian/" + clump.name +
-                        '\n\t' + "clumpiled/install.sh" )
+    destdir = "debian/" + clump.name
+    vals['install'] = "DESTDIR={0} clumpiled/install.sh".format(destdir)
   else:
     vals['build'] = 'cmake .' + '\n\t' + 'make'
     vals['install'] = "make install DESTDIR=debian/" + clump.name
@@ -65,7 +65,8 @@ def debian_changelog(clump):
       when = entry['when']
     version = entry['version']
     ret += "{0} ({1}-1) UNRELEASED; urgency=low\n".format(clump.name, version)
-    ret += "  * {0}\n".format(entry['what'])
+    body_text = "\n    ".join(entry['what'].splitlines())
+    ret += "  * {0}\n".format(body_text)
     ret += " -- {0}  {1}\n".format(entry['who'], when)
   return ret
 
