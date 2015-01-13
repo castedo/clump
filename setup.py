@@ -19,7 +19,7 @@ setup(name=clump.name,
       license='MIT',
       packages=['clump'],
       url='https://github.com/castedo/clump',
-      package_data={'clump': ['rhel/*', 'debian/*']},
+      package_data={'clump': ['default-CMakeLists.txt', 'rhel/*', 'debian/*']},
       requires=['yaml', 'configobj'],
       scripts=['scripts/clump']
 )
