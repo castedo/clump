@@ -8,6 +8,7 @@ import tarfile
 import string
 import time
 from subprocess import check_call
+from clump import common
 
 MODULE_PATH = path.abspath(path.dirname(__file__))
 
@@ -76,28 +77,33 @@ def debian_postinst(clump):
     ownergroup = clump.ownership[path]
     lines.append("chown --recursive {0} '{1}'".format(ownergroup, path))
   vals = { 'chownlines': "\n".join(lines) }
-  template_path = os.path.join(MODULE_PATH, 'template-postinst')
+  template_path = path.join(MODULE_PATH, 'template-postinst')
   tmpl = string.Template(open(template_path).read())
   return(tmpl.substitute(vals))
 
-def save_components(clump):
+def save_components(clump, destpath):
   for c in clump.components:
-    tarball = path.join('..', c.debian_tarball_filename(clump))
+    tarball = c.debian_tarball_filename(clump)
+    component_dir = path.join(destpath, c.id)
     if c.file:
-      filepath = path.join('..', c.file)
-      c.save_source(filepath)
+      c.save_source(c.file)
       with tarfile.open(tarball, "w:gz") as tar:
-        tar.add(filepath, path.join(c.id, c.file))
+        tar.add(c.file, path.join(c.id, c.file))
+      os.mkdir(component_dir)
+      shutil.copy(c.file, component_dir)
     else:
       c.save_source(tarball)
-    with tarfile.open(tarball, "r") as tar:
-      tar.extractall()
+      with tarfile.open(tarball, "r") as tar:
+        tar.extractall(path=destpath)
+        topdir = common.tarball_topdir(tar)
+      os.rename(path.join(destpath, topdir), component_dir)
 
 def build(clump):
   if path.exists(clump.untardir):
     shutil.rmtree(clump.untardir)
   with tarfile.open(clump.tarfilename, "r") as tar:
     tar.extractall()
+  save_components(clump, clump.untardir)
   os.chdir(clump.untardir)
   os.mkdir('debian')
   print("9", file=open('debian/compat', 'w'))
@@ -110,7 +116,6 @@ def build(clump):
     print(debian_postinst(clump), file=open('debian/postinst', 'w'))
   os.mkdir('debian/source')
   print("3.0 (quilt)", file=open('debian/source/format', 'w'))
-  save_components(clump)
   check_call(['debuild', '-uc', '-us'])
 
 def print_files_list(buildroot):

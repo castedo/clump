@@ -53,8 +53,12 @@ class Component(object):
     self.file = values.get('file')
 
   def debian_tarball_filename(self, clump):
-    fn = "{0}_{1}.orig-{2}.tar.gz"
-    return fn.format(clump.name, clump.version, self.id)
+    tarsuffix = ".gz"
+    pair = self.url.rsplit(".tar", 1)
+    if len(pair) == 2:
+      tarsuffix = pair[1]
+    fn = "{0}_{1}.orig-{2}.tar{3}"
+    return fn.format(clump.name, clump.version, self.id, tarsuffix)
 
   def save_source(self, outpath):
     if not os.path.exists(outpath):
