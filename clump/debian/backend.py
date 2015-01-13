@@ -22,7 +22,7 @@ def debian_rules(clump):
   vals = dict()
   if clump.install:
     vals['build'] = '# no build'
-    destdir = "debian/" + clump.name
+    destdir = "$(CURDIR)/debian/" + clump.name
     vals['install'] = "DESTDIR={0} clumpiled/install.sh".format(destdir)
   else:
     vals['build'] = 'cmake .' + '\n\t' + 'make'
