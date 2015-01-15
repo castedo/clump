@@ -54,9 +54,8 @@ Binary RPM Packages
 -------------------
 
 An RPM package named clump is built by Castedo and found in the following repositories:
-
-For CentOS/RHEL 7: http://dist.brokertron.com/repo/centos/7/brokertron.repo
-For Amazon Linux 2014.09: http://dist.brokertron.com/repo/amzn/2014.09/brokertron.repo
+* CentOS/RHEL 7: http://dist.brokertron.com/repo/centos/7/brokertron.repo
+* Amazon Linux 2014.09: http://dist.brokertron.com/repo/amzn/2014.09/brokertron.repo
 
 Place those .repo files in your /etc/yum.repos.d/ and do `sudo yum install clump`.
 
