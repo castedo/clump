@@ -50,6 +50,18 @@ Clump generates packages for the distribution it is being run on.  For multiple
 packages for muliple distributions you need to run clump on those multiple
 distributions.
 
+Binary RPM Packages
+-------------------
+
+An RPM package named clump is built by Castedo and found in the following repositories:
+
+For CentOS/RHEL 7: http://dist.brokertron.com/repo/centos/7/brokertron.repo
+For Amazon Linux 2014.09: http://dist.brokertron.com/repo/amzn/2014.09/brokertron.repo
+
+Place those .repo files in your /etc/yum.repos.d/ and do `sudo yum install clump`.
+
+Or you can git clone this repository and run `clump/test/clump.sh`.
+
 Related Projects
 ----------------
 
