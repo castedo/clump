@@ -59,16 +59,16 @@ def debian_changelog(clump):
   for entry in clump.changelog:
     try:
       # parse RPM style date
-      when = time.strptime(entry['when'], "%a %b %d %Y")
+      when = time.strptime(entry.when, "%a %b %d %Y")
       # print as debian style date-time
       when = time.strftime("%a, %d %b %Y 00:00:00 +0000", when)
     except ValueError:
-      when = entry['when']
-    version = entry['version']
+      when = entry.when
+    version = entry.version
     ret += "{0} ({1}-1) UNRELEASED; urgency=low\n".format(clump.name, version)
-    body_text = "\n    ".join(entry['what'].splitlines())
+    body_text = "\n    ".join(entry.what.splitlines())
     ret += "  * {0}\n".format(body_text)
-    ret += " -- {0}  {1}\n".format(entry['who'], when)
+    ret += " -- {0}  {1}\n".format(entry.who, when)
   return ret
 
 def debian_postinst(clump):

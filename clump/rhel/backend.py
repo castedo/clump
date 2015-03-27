@@ -16,8 +16,8 @@ def rpm_changelog(clump):
   ret = ''
   for entry in clump.changelog:
     s = "* {0} {1} - {2}\n"
-    ret += s.format(entry['when'], entry['who'], entry['version'])
-    ret += "- {0}\n".format(entry['what'])
+    ret += s.format(entry.when, entry.who, entry.version)
+    ret += "- {0}\n".format(entry.what)
   return ret
 
 def rpm_sources(clump):

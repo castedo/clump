@@ -8,32 +8,34 @@ Requires:
 - python-yaml
 - python-configobj
 - rhel: rpm
-  debian: devscripts
+  ubuntu: [devscripts, debhelper, build-essential]
 Description: |
   Build packages for Enterprise Linux and Debian based Linux distros in a
   uniform way for mutually supported package functionality.
 changelog:
+- version: 0.6
+  who: Castedo Ellerman <castedo@castedo.com>
+  when: Thu Mar 26 2015
+  what: |
+    allow who entries to be omitted if they can be infered
+    allow distro specific dependecies to be in a list
+    correct dependecies required on ubuntu
 - version: 0.5
   when: Tue Jan 13 2015
-  who: Castedo Ellerman <castedo@castedo.com>
   what: make setup.py package missing default-CMakeLists.txt file
 - version: 0.4
   when: Mon Jan 12 2015
-  who: Castedo Ellerman <castedo@castedo.com>
   what: |
     walk all indirect rpm dependencies to find directories
     to exclude from rpm files list
 - version: 0.3
   when: Wed Jan 07 2015
-  who: Castedo Ellerman <castedo@castedo.com>
   what: |
     implement sections install and cmake on Enterprise Linux
     fix check_output call on Python 2.7
 - version: 0.2
   when: Mon Jan 05 2015
-  who: Castedo Ellerman <castedo@castedo.com>
   what: Backport to work with Python 2.6 for Amazon Linux
 - version: 0.1
   when: Thu Dec 25 2014
-  who: Castedo Ellerman <castedo@castedo.com>
   what: Initial version packaging itself.

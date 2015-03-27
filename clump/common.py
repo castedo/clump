@@ -26,12 +26,17 @@ def resolve_requires(requires):
   ret = list()
   if requires:
     for requirement in requires:
-      if type(requirement) is dict:
+      if not type(requirement) is dict:
+        ret.append(requirement)
+      else:
         for id in osrelease.IDS:
           if id in requirement:
-            requirement = requirement[id]
+            found = requirement[id]
             break
-      ret.append(requirement)
+        try:
+          ret.extend(iter(found))
+        except TypeError:
+          ret.append(found)
   return ret
 
 def file_digest(filepath, hashobj):
@@ -73,6 +78,31 @@ class Component(object):
               + " hash digest in clump file")
         raise ValueError(msg)
 
+class Change(object):
+  def __init__(self, values):
+    self.version = values.get('version')
+    self.when = values.get('when')
+    self.what = values.get('what')
+    self.who = values.get('who')
+
+def infer_missing_changelog_whos(changelog):
+  if not len(changelog):
+    raise ValueError("changelog must not be empty")
+  inferred = changelog[0].who
+  if not inferred:
+    raise ValueError("first changelog entry must state who")
+  for i in range(1, len(changelog)):
+    if changelog[i].who:
+      inferred = changelog[i].who
+    else:
+      next = None
+      if i+1 < len(changelog):
+        next = changelog[i+1].who
+      if next and next != inferred:
+        msg = "omitted who is ambiguous (version {0})"
+        raise ValueError(msg.format(changelog[i].version))
+      changelog[i].who = inferred
+
 class ClumpInfo(object):
 
   def __init__(self, yamlfile):
@@ -99,12 +129,13 @@ class ClumpInfo(object):
     self.untardir = "{0}-{1}".format(self.name, self.version)
 
   def _init_changelog(self, content):
-    self.changelog = content.get('changelog')
-    if not self.changelog or not len(self.changelog):
-      raise ValueError("'changelog:' non-empty list is required in clump file")
+    if not 'changelog' in content:
+      raise ValueError("changelog missing in clump file")
+    self.changelog = [Change(c) for c in content.get('changelog')]
+    infer_missing_changelog_whos(self.changelog)
 
   def _init_version(self, content):
-    self.version = self.changelog[0].get('version')
+    self.version = self.changelog[0].version
     if not self.version:
       raise ValueError("first changelog entry must have the version")
     if 'version' in content:
