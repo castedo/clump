@@ -34,10 +34,9 @@ def resolve_requires(requires):
           if id in requirement:
             found = requirement[id]
             break
-        try:
-          ret.extend(iter(found))
-        except TypeError:
-          ret.append(found)
+        if not isinstance(found, list):
+          found = [found]
+        ret.extend(found)
   return ret
 
 def file_digest(filepath, hashobj):
