@@ -2,6 +2,7 @@ from __future__ import print_function, division, unicode_literals
 import warnings
 import os
 from os.path import join
+import time
 from string import Template
 from subprocess import check_call
 from clump import common
@@ -16,7 +17,8 @@ def rpm_changelog(clump):
   ret = ''
   for entry in clump.changelog:
     s = "* {0} {1} - {2}\n"
-    ret += s.format(entry.when, entry.who, entry.version)
+    when = time.strftime("%a %b %d %Y", entry.when)
+    ret += s.format(when, entry.who, entry.version)
     ret += "- {0}\n".format(entry.what)
   return ret
 

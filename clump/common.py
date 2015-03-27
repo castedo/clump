@@ -3,6 +3,7 @@ import warnings
 import os
 import osrelease
 import yaml
+import time
 import urllib
 import hashlib
 import tarfile
@@ -81,9 +82,14 @@ class Component(object):
 class Change(object):
   def __init__(self, values):
     self.version = values.get('version')
-    self.when = values.get('when')
     self.what = values.get('what')
     self.who = values.get('who')
+    try:
+      # parse RPM style date
+      self.when = time.strptime(values.get('when'), "%a %b %d %Y")
+    except ValueError:
+      msg = "Not in Sat Jan 01 2000 date format: {0}"
+      raise ValueError(msg.format(values.get('when')))
 
 def infer_missing_changelog_whos(changelog):
   if not len(changelog):
