@@ -13,8 +13,11 @@ Description: |
   Build packages for Enterprise Linux and Debian based Linux distros in a
   uniform way for mutually supported package functionality.
 changelog:
-- version: 0.6.1
+- version: 0.7
   who: Castedo Ellerman <castedo@castedo.com>
+  when: Wed Apr 1 2015
+  what: create rpmbuild subdirs if not exist
+- version: 0.6.1
   when: Fri Mar 27 2015
   what: fixed bug trying to be Pythonic
 - version: 0.6

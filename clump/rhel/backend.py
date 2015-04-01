@@ -2,16 +2,26 @@ from __future__ import print_function, division, unicode_literals
 import warnings
 import os
 from os.path import join
+import distutils.dir_util
 import time
 from string import Template
 from subprocess import check_call
 from clump import common
 
 def tarball_dest():
-  return os.path.expanduser('~/rpmbuild/SOURCES/')
+  dest = os.path.expanduser('~/rpmbuild/SOURCES/')
+  distutils.dir_util.mkpath(dest)
+  return dest
 
 def build_dir():
-  return os.path.expanduser('~/rpmbuild/BUILD/')
+  dest = os.path.expanduser('~/rpmbuild/BUILD/')
+  distutils.dir_util.mkpath(dest)
+  return dest
+
+def specs_dest():
+  dest = os.path.expanduser('~/rpmbuild/SPECS/')
+  distutils.dir_util.mkpath(dest)
+  return dest
 
 def rpm_changelog(clump):
   ret = ''
@@ -35,7 +45,7 @@ def rpm_prep(clump):
   n = 1
   for c in clump.components:
     if c.file:
-      outpath = os.path.expanduser('~/rpmbuild/SOURCES/') + c.file
+      outpath = tarball_dest() + c.file
       c.save_source(outpath)
       lines.append("mkdir {0}".format(c.id))
       lines.append("cp %SOURCE{0} {1}".format(n, c.id))
@@ -43,7 +53,7 @@ def rpm_prep(clump):
       fn = c.url.split('/')[-1]
       if not fn:
         fn = c.debian_tarball_filename(clump)
-      outpath = os.path.expanduser('~/rpmbuild/SOURCES/') + fn
+      outpath = tarball_dest() + fn
       c.save_source(outpath)
       untardir = common.tarball_topdir(outpath)
       lines.append("%setup -q -T -D -a {0}".format(n))
@@ -86,7 +96,7 @@ def rpm_spec_content(clump):
 
 def build(clump):
   name_version = clump.name + '-' + clump.version
-  specpath = os.path.expanduser('~/rpmbuild/SPECS/' + name_version + '.spec')
+  specpath = specs_dest() + name_version + '.spec'
   print(rpm_spec_content(clump), file=open(specpath, "w"))
   check_call(['rpmbuild', '-ba', specpath])
 
