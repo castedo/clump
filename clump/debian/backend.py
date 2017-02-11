@@ -66,6 +66,11 @@ def debian_changelog(clump):
     ret += " -- {0}  {1}\n".format(entry.who, when)
   return ret
 
+def debian_preinst(clump):
+  template_path = path.join(MODULE_PATH, 'template-preinst')
+  tmpl = string.Template(open(template_path).read())
+  return(tmpl.substitute({'pre': clump.pre}))
+
 def debian_postinst(clump):
   lines = []
   for path in clump.ownership:
@@ -108,7 +113,9 @@ def build(clump):
   os.chmod('debian/rules', 0755)
   print(debian_control(clump), file=open('debian/control', 'w'))
   print(debian_changelog(clump), file=open('debian/changelog', 'w'))
-  if clump.ownership:
+  if clump.pre:
+    print(debian_preinst(clump), file=open('debian/preinst', 'w'))
+  if clump.post or clump.ownership:
     print(debian_postinst(clump), file=open('debian/postinst', 'w'))
   os.mkdir('debian/source')
   print("3.0 (quilt)", file=open('debian/source/format', 'w'))

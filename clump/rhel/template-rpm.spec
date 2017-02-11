@@ -24,6 +24,9 @@ rm -rf %{buildroot}
 $install
 %{__python} -m clump.rpmlistfiles %{buildroot} > clumpiled/files.txt
 
+%pre
+$pre
+
 %post
 $post
 

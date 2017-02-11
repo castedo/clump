@@ -13,10 +13,10 @@ Description: |
   Build packages for Enterprise Linux and Debian based Linux distros in a
   uniform way for mutually supported package functionality.
 changelog:
-- version: 0.8.1
-  who: Castedo Ellerman <castedo@castedo.com>
+- version: 0.8.2
   when: Fri Feb 10 2017
-  what: enable setting of post install section
+  what: enable setting of pre and post install sections
+  who: Castedo Ellerman <castedo@castedo.com>
 - version: 0.7
   when: Wed Apr 1 2015
   what: create rpmbuild subdirs if not exist

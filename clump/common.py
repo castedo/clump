@@ -125,6 +125,7 @@ class ClumpInfo(object):
     self.description = content.get('description')
     self.cmake = content.get('cmake')
     self.install = content.get('install')
+    self.pre = content.get('pre')
     self.post = content.get('post')
     self.requires = resolve_requires(content.get('requires'))
     self._init_changelog(content)
