@@ -71,7 +71,8 @@ def debian_postinst(clump):
   for path in clump.ownership:
     ownergroup = clump.ownership[path]
     lines.append("chown --recursive {0} '{1}'".format(ownergroup, path))
-  vals = { 'chownlines': "\n".join(lines) }
+  vals = { 'chownlines': "\n".join(lines),
+           'post': (clump.post or "") }
   template_path = path.join(MODULE_PATH, 'template-postinst')
   tmpl = string.Template(open(template_path).read())
   return(tmpl.substitute(vals))

@@ -8,6 +8,8 @@ fi
 
 $chownlines
 
+$post
+
 #DEBHELPER#
 
 exit 0
