@@ -31,31 +31,28 @@ class DependencyWalker(object):
     for r in requires:
       self.walk(r)
 
-def rpm_attr(ownergroup):
-  pair = ownergroup.split(':', 1)
-  owner = pair[0] if pair[0] else '-'
-  group = pair[1] if pair[1] else '-'
-  return "%attr(-, {0}, {1}) ".format(owner, group)
+def list_chowned_paths(chowned):
+  for path, ownergroup in chowned.iteritems():
+    pair = ownergroup.split(':', 1)
+    owner = pair[0] if pair[0] else '-'
+    group = pair[1] if pair[1] else '-'
+    print('%attr(-, {0}, {1}) "{2}"'.format(owner, group, path))
 
-def list_files(buildroot, path, excludes, ownership):
-  line = '"' + path + '"'
-  if path in ownership:
-    line = rpm_attr(ownership[path]) + line
+def list_simple_paths(buildroot, path, external, skips):
   realpath = buildroot + path
-  if not os.path.isdir(realpath):
-    print(line)
+  if os.path.isdir(realpath) and path in external:
+    for name in os.listdir(realpath):
+      nextpath = os.path.join(path, name)
+      if not nextpath in skips:
+        list_simple_paths(buildroot, nextpath, external, skips)
   else:
-    if path not in excludes:
-      print(line)
-    else:
-      for name in os.listdir(realpath):
-        nextpath = os.path.join(path, name)
-        list_files(buildroot, nextpath, excludes, ownership)
+    print('"' + path + '"')
 
 if __name__ == "__main__":
   buildroot = sys.argv[1]
   clump = ClumpInfo("clump.yaml")
   walker = DependencyWalker()
   walker.walk_all(clump.requires + ['filesystem'])
-  list_files(buildroot, '/', walker.files, clump.ownership)
+  list_simple_paths(buildroot, '/', walker.files, clump.ownership.keys())
+  list_chowned_paths(clump.ownership)
 
