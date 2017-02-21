@@ -12,6 +12,7 @@ def write_bash_script(content, filename):
   path = "clumpiled/" + filename
   with open(path, 'w') as fout:
     print("#!/bin/bash", file=fout)
+    print("set -o errexit", file=fout)
     print(content, file=fout)
   os.chmod(path, 0755)
 
