@@ -14,7 +14,7 @@ class DependencyWalker(object):
 
   def walk(self, requirement):
     if requirement not in self.walked:
-      mi = walker.ts.dbMatch(rpm.RPMTAG_PROVIDENAME, requirement)
+      mi = self.ts.dbMatch(rpm.RPMTAG_PROVIDENAME, requirement)
       for i in range(mi.count()):
         h = mi.next()
         self.files.update(h[rpm.RPMTAG_FILENAMES])
@@ -29,6 +29,8 @@ class DependencyWalker(object):
 
   def walk_all(self, requires):
     for r in requires:
+      if not self.ts.dbMatch(rpm.RPMTAG_PROVIDENAME, r).count():
+        raise ValueError("Required package is not installed: " + r)
       self.walk(r)
 
 def list_chowned_paths(chowned):
