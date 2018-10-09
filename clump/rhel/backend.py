@@ -81,6 +81,10 @@ def rpm_spec_content(clump):
   for r in clump.requires:
     vals['requires'] += 'Requires:       ' + r + '\n'
 
+  vals['buildrequires'] = ''
+  for r in clump.buildrequires:
+    vals['buildrequires'] += 'BuildRequires:       ' + r + '\n'
+
   vals['prep'] = rpm_prep(clump)
   vals['changelog'] = rpm_changelog(clump)
 

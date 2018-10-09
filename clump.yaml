@@ -13,10 +13,13 @@ Description: |
   Build packages for Enterprise Linux and Debian based Linux distros in a
   uniform way for mutually supported package functionality.
 changelog:
+- version: 0.12
+  when: Tue Oct 9 2018
+  what: add BuildRequires and use to determine what paths are outside package
+  who: Castedo Ellerman <castedo@castedo.com>
 - version: 0.11
   when: Wed Feb 22 2017
   what: raise error if required package is not installed (thus not walkable)
-  who: Castedo Ellerman <castedo@castedo.com>
 - version: 0.10
   when: Tue Feb 21 2017
   what: set bash option errexit in clumpiled install script

@@ -7,6 +7,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-root
 $buildarch
 $sources
 $requires
+$buildrequires
 
 %description
 $description

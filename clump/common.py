@@ -128,6 +128,7 @@ class ClumpInfo(object):
     self.pre = content.get('pre')
     self.post = content.get('post')
     self.requires = resolve_requires(content.get('requires'))
+    self.buildrequires = resolve_requires(content.get('buildrequires'))
     self._init_changelog(content)
     self._init_version(content)
     self._init_sources(content)

@@ -27,10 +27,10 @@ class DependencyWalker(object):
             if not (rflags[i] & rpm.RPMSENSE_RPMLIB):
               self.walk(rnames[i])
 
-  def walk_all(self, requires):
-    for r in requires:
+  def walk_all(self, buildrequires):
+    for r in buildrequires:
       if not self.ts.dbMatch(rpm.RPMTAG_PROVIDENAME, r).count():
-        raise ValueError("Required package is not installed: " + r)
+        raise ValueError("Build required package is not installed: " + r)
       self.walk(r)
 
 def list_chowned_paths(chowned):
@@ -54,7 +54,7 @@ if __name__ == "__main__":
   buildroot = sys.argv[1]
   clump = ClumpInfo("clump.yaml")
   walker = DependencyWalker()
-  walker.walk_all(clump.requires + ['filesystem'])
+  walker.walk_all(clump.buildrequires + ['filesystem'])
   list_simple_paths(buildroot, '/', walker.files, clump.ownership.keys())
   list_chowned_paths(clump.ownership)
 
